@@ -67,6 +67,14 @@ export const api = {
     list: () => request<Report[]>("/api/reports/"),
     get: (id: string) => request<Report>(`/api/reports/${id}`),
   },
+  goals: {
+    list: () => request<Goal[]>("/api/goals/"),
+    create: (data: { name: string; target_amount: number; current_amount: number; target_date: string }) =>
+      request<Goal>("/api/goals/", { method: "POST", body: JSON.stringify(data) }),
+    update: (id: string, data: { current_amount?: number; status?: string }) =>
+      request<Goal>(`/api/goals/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
+    delete: (id: string) => request(`/api/goals/${id}`, { method: "DELETE" }),
+  },
 };
 
 export interface BankAccount {
@@ -102,4 +110,24 @@ export interface AgentRun {
   status: string;
   agents_invoked: string[];
   fact_check_flags: unknown[];
+}
+
+export interface GoalCheckpoint {
+  id: string;
+  amount_at_checkpoint: number;
+  on_track: boolean;
+  variance: number;
+  recorded_at: string;
+}
+
+export interface Goal {
+  id: string;
+  name: string;
+  target_amount: number;
+  current_amount: number;
+  target_date: string;
+  status: "active" | "achieved" | "abandoned";
+  created_at: string;
+  achieved_at: string | null;
+  checkpoints: GoalCheckpoint[];
 }

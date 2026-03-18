@@ -70,6 +70,18 @@ class GoalCreate(BaseModel):
     current_amount: float = 0
     target_date: date
 
+class GoalUpdate(BaseModel):
+    current_amount: Optional[float] = None
+    status: Optional[str] = None
+
+class GoalCheckpointOut(BaseModel):
+    id: str
+    amount_at_checkpoint: float
+    on_track: bool
+    variance: float
+    recorded_at: datetime
+    model_config = {"from_attributes": True}
+
 class GoalOut(BaseModel):
     id: str
     name: str
@@ -77,7 +89,12 @@ class GoalOut(BaseModel):
     current_amount: float
     target_date: date
     status: str
+    created_at: datetime
+    achieved_at: Optional[datetime] = None
     model_config = {"from_attributes": True}
+
+class GoalWithCheckpoints(GoalOut):
+    checkpoints: list[GoalCheckpointOut] = []
 
 # Reports
 class ReportOut(BaseModel):

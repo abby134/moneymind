@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.database import engine, Base
-from app.api.routes import auth, accounts, uploads, snapshots, reports
+from app.api.routes import auth, accounts, uploads, snapshots, reports, goals
 
 app = FastAPI(title="MoneyMind API", version="1.0.0")
 
@@ -19,6 +19,7 @@ app.include_router(accounts.router, prefix="/api/accounts", tags=["accounts"])
 app.include_router(uploads.router, prefix="/api/uploads", tags=["uploads"])
 app.include_router(snapshots.router, prefix="/api/snapshots", tags=["snapshots"])
 app.include_router(reports.router, prefix="/api/reports", tags=["reports"])
+app.include_router(goals.router, prefix="/api/goals", tags=["goals"])
 
 
 @app.on_event("startup")
